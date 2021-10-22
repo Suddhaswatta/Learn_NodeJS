@@ -1,12 +1,15 @@
 
 const { demandOption, argv ,command,parse} = require("yargs")
+
 const {clear,create,readAll, read, remove} = require('./note-fs.js')
 const yargs = require('yargs')
 const {ok, err,} = require('./logging.js')
 
+
 command({
     command:"get",
     describe:"get a note",
+
     builder:{
         title:{
             describe: "Note title",
@@ -33,6 +36,7 @@ command({
             type:'string'
         }
     },
+
     handler(){
         let note = {title:"",body:""}
         note.title = argv.title.trim()
@@ -43,6 +47,7 @@ command({
 command({
     command:"remove",
     describe:"Remove a note",
+
     builder:{
         title:{
             describe: "Note title",
@@ -57,6 +62,7 @@ command({
 command({
     command:"list",
     describe:"get all notes",
+
     handler(){
         const notes = readAll()
         if(notes){
@@ -69,8 +75,10 @@ command({
 command({
     command:"clear",
     describe:"remove all notes",
+
     handler(){
         clear()
+
     }
 })
 
