@@ -1,35 +1,64 @@
-const chalk = require("chalk")
-const error = chalk.bold.redBright
-const success = chalk.bold.greenBright
-const info = chalk.bold.blue
+const {info,err, ok} = require("./logging")
+const fs = require('fs')
+
+const filename = "notes.json"
+
 
 const create = (note)=>{
-    console.log(success(`Added note : ${JSON.stringify(note)}`));
+    let notes = readAll()
+    const got = read(note.title)
+    if(got!==undefined && got.length !=0 )
+        err(`Note with title : ${note.title} already exists.`)
+    else{
+        notes.push(note)
+        write(notes)
+    }    
+}
+
+const clear = ()=>{
+    fs.unlink(filename,(e)=>{
+        if(e){
+            err(`There are no data to be deleted ....... :(`)
+        }else{
+            ok(`All data are removed :)`)
+        }
+    })
+}
+const write = (data)=>{
+    fs.writeFileSync(filename,JSON.stringify(data))
+    info(`Written data :\n${JSON.stringify(data)}`)
+    return data
 }
 
 const update = (note)=>{
-    console.log(error(`UPDATED Note : ${JSON.stringify(note)}`));
+    remove(note.title)
+    create(note)
 }
 
-
-const remove = (note)=>{
-    console.log(error(`DELETED Note : ${JSON.stringify(note)}`));
+const remove = (title)=>{
+    const notes = readAll().filter((note)=>note.title !== title)
+    write(notes)
 }
 
-
-const read = (note)=>{
-    console.log(info(`FETCHED Note : ${JSON.stringify(note)}`));
+const read = (title)=>{
+    return readAll().filter((note)=>note.title === title)
 }
 
 const readAll = ()=>{
-    console.log(info(`FETCHED Notes : `));
+    try{
+        const buffer = fs.readFileSync(filename).toString()
+        return JSON.parse(buffer)
+    }catch(e){
+        return []
+    }
 }
 
 module.exports = {
   create : create,
   update : update,
-  delete : remove,
+  remove : remove,
   read : read,
-  readAll : readAll
+  readAll : readAll,
+  clear : clear
 }
 
