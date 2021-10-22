@@ -66,7 +66,7 @@ command({
     handler(){
         const notes = readAll()
         if(notes){
-            ok(`Fetched all data :\n${JSON.stringify(notes)}`)
+            ok(`Fetched all data :\n${JSON.stringify(notes,null,4)}`)
         }else{
             ok(`There are no data as of now ....`)
         }

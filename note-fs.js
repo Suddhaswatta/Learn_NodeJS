@@ -26,8 +26,9 @@ const clear = ()=>{
     })
 }
 const write = (data)=>{
-    fs.writeFileSync(filename,JSON.stringify(data))
-    info(`Current data : \n${JSON.stringify(data)}\n`)
+    const strData = JSON.stringify(data,null,4)
+    fs.writeFileSync(filename,strData)
+    info(`Current data : \n${strData}\n`)
     return data
 }
 
