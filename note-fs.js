@@ -27,7 +27,7 @@ const clear = ()=>{
 }
 const write = (data)=>{
     fs.writeFileSync(filename,JSON.stringify(data))
-    info(`Written data :\n${JSON.stringify(data)}`)
+    info(`Current data : \n${JSON.stringify(data)}\n`)
     return data
 }
 
@@ -37,6 +37,12 @@ const update = (note)=>{
 }
 
 const remove = (title)=>{
+    const found = read(title)
+    if(found.length !==0 ){
+        err(`Data to be deleted :: ${JSON.stringify(found)}`)
+    }else{
+        err(`No data found to be deleted .`)
+    }
     const notes = readAll().filter((note)=>note.title !== title)
     write(notes)
 }
